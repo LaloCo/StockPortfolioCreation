@@ -1,1 +1,4 @@
 keys.py
+
+# ignore cache folder
+__pycache__/

@@ -9,6 +9,8 @@ api_key = keys.api_key
 def savePickedStocks(picked_stocks):
     with open(file_name, 'w') as outfile:
         json.dump(picked_stocks, outfile)
+    
+    print('Saved')
 
 def retrievePickedStocks():
     with open(file_name) as jsonfile:
@@ -63,6 +65,7 @@ def pickStocks(allStocks):
                 'pe_ratio': pe_ratio
             })
 
+    print('Picked')
     return picked_stocks
 
 def pickNewStocks():
@@ -72,6 +75,10 @@ def pickNewStocks():
 
 def evaluatePickedStocks():
     picked_stocks = retrievePickedStocks()
+
+    #TODO: set score based on Joel Greenblatt's book
+    #TODO: order picked_stocks by score
+
     print(picked_stocks)
 
 if __name__ == "__main__":
