@@ -21,8 +21,7 @@ def getStocks():
     }
 
     stocks = http.get('https://financialmodelingprep.com/api/v3/stock/list', params)
-    stocks = stocks.json()
-    return stocks
+    return stocks.json()
 
 def pickStocks(allStocks):
     params = {
@@ -59,9 +58,18 @@ def pickStocks(allStocks):
 
     return picked_stocks
 
-if __name__ == "__main__":
-    # stocks = retrievePickedStocks()
+def pickNewStocks():
     stocks = getStocks()
     picked_stocks = pickStocks(stocks)
-    #print(picked_stocks)
-    savePickedStocks(stocks)
+    savePickedStocks(picked_stocks)
+
+def evaluatePickedStocks():
+    picked_stocks = retrievePickedStocks()
+    print(picked_stocks)
+
+if __name__ == "__main__":
+    pickNewStocks()
+    
+    # once gone through the picking, making a ton of requests to the API
+    # we can evaluate the stocks saved to the txt file:
+    # evaluatePickedStocks()
