@@ -32,6 +32,10 @@ def pickStocks(allStocks):
 
     picked_stocks = []
     for stock in allStocks:
+        #! check if keys exist
+        if 'name' not in stock or 'symbol' not in stock:
+            continue
+
         #? ignore foreign companies (American Deposit Receipts)
         if 'ADR' in stock['name']:
             continue
@@ -44,6 +48,10 @@ def pickStocks(allStocks):
             continue
         financial_ratios = financial_ratios[0]  # the service returns ratios per year, this gets latest
         
+        #! check if keys exist
+        if 'returnOnAssets' not in financial_ratios or 'priceEarningsRatio' not in financial_ratios:
+            continue
+
         roa = financial_ratios['returnOnAssets']
         pe_ratio = financial_ratios['priceEarningsRatio']
 
