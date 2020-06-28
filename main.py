@@ -37,8 +37,10 @@ def pickStocks(allStocks):
             continue
 
         #? ignore foreign companies (American Deposit Receipts)
-        if 'ADR' in stock['name']:
+        #? ignore foreign companies (contains '.' in name)
+        if 'ADR' in stock['name'] or '.' in stock['name']:
             continue
+
 
         symbol = stock['symbol']
 
