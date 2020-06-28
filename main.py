@@ -6,13 +6,13 @@ import keys
 file_name = 'pickedStocks.txt'
 api_key = keys.api_key
 
-def savePickedStocks(picked_stocks):
+def saveStocks(stocks, file_name):
     with open(file_name, 'w') as outfile:
-        json.dump(picked_stocks, outfile)
+        json.dump(stocks, outfile)
     
     print('Saved')
 
-def retrievePickedStocks():
+def retrievePickedStocks(file_name):
     with open(file_name) as jsonfile:
         data = json.load(jsonfile)
         return data
@@ -81,19 +81,30 @@ def pickStocks(allStocks):
 def pickNewStocks():
     stocks = getStocks()
     picked_stocks = pickStocks(stocks)
-    savePickedStocks(picked_stocks)
+    saveStocks(picked_stocks, file_name)
 
 def evaluatePickedStocks():
-    picked_stocks = retrievePickedStocks()
+    picked_stocks = retrievePickedStocks(file_name)
+    picked_df = pd.DataFrame(picked_stocks)
 
     #TODO: set score based on Joel Greenblatt's book
     #TODO: order picked_stocks by score
 
-    print(picked_stocks)
+    # sort by roa to assign first ranking (according to page 56 of TLB that STILL beats the market)
+    picked_df.sort_values(by=['roa'], ascending=False, inplace=True)
+    picked_df['roa_ranking'] = [i + 1 for i in range(len(picked_stocks))]
+    # sort by pe ratio to assign second ranking (according to page 57 of TLB that STILL beats the market)
+    picked_df.sort_values(by=['pe_ratio'], ascending=False, inplace=True)
+    picked_df['pe_ranking'] = [i + 1 for i in range(len(picked_stocks))]
+
+    picked_df['overall_ranking'] = picked_df['pe_ranking'] + picked_df['roa_ranking']
+    picked_df.sort_values(by=['overall_ranking'], ascending=True, inplace=True)
+
+    picked_df.to_excel('best_picks.xlsx')
 
 if __name__ == "__main__":
-    pickNewStocks()
+    # pickNewStocks()
     
     # once gone through the picking, making a ton of requests to the API
     # we can evaluate the stocks saved to the txt file:
-    # evaluatePickedStocks()
+    evaluatePickedStocks()
