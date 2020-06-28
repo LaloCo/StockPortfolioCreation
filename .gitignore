@@ -1,4 +1,5 @@
 keys.py
+serviceAccountKey.json
 
 # ignore cache folder
 __pycache__/

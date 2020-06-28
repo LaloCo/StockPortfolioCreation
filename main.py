@@ -2,9 +2,10 @@ import requests as http
 import pandas as pd
 import json
 import keys
+import firestore
 
 file_name = 'pickedStocks.txt'
-api_key = keys.api_key
+api_key = keys.financialmodelingprep_api_key
 
 def saveStocks(stocks, file_name):
     with open(file_name, 'w') as outfile:
@@ -96,11 +97,13 @@ def evaluatePickedStocks():
     # sort by pe ratio to assign second ranking (according to page 57 of TLB that STILL beats the market)
     picked_df.sort_values(by=['pe_ratio'], ascending=False, inplace=True)
     picked_df['pe_ranking'] = [i + 1 for i in range(len(picked_stocks))]
-
+    # calculate overall ranking
     picked_df['overall_ranking'] = picked_df['pe_ranking'] + picked_df['roa_ranking']
     picked_df.sort_values(by=['overall_ranking'], ascending=True, inplace=True)
 
     picked_df.to_excel('best_picks.xlsx')
+
+    firestore.uploadToFirestore(picked_df)
 
 if __name__ == "__main__":
     # pickNewStocks()
