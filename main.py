@@ -30,6 +30,10 @@ def pickStocks(allStocks):
 
     picked_stocks = []
     for stock in allStocks:
+        #? ignore foreign companies (American Deposit Receipts)
+        if 'ADR' in stock['name']:
+            continue
+
         symbol = stock['symbol']
 
         financial_ratios = http.get(f'https://financialmodelingprep.com/api/v3/ratios/{symbol}', params)
@@ -45,6 +49,9 @@ def pickStocks(allStocks):
             continue
 
         print(f'{symbol}: roa={roa}, p-e ratio={pe_ratio}')
+
+        #TODO: Ignore utilities and financial stocks (mutual funds, banks and insurance companies)
+        #TODO: I believe funds are already ignored because pe_ratio would be None
 
         # return on assets must be at least 25%
         # price to earnings ratio of 5 or less may indicate that the year's data is unusual in some way
