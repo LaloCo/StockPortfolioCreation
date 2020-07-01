@@ -65,6 +65,7 @@ def pickStocks(allStocks):
 
         #TODO: Ignore utilities and financial stocks (mutual funds, banks and insurance companies)
         #TODO: I believe funds are already ignored because pe_ratio would be None
+        #TODO: But still some utilities and financial stocks may remain
 
         # return on assets must be at least 25%
         # price to earnings ratio of 5 or less may indicate that the year's data is unusual in some way
