@@ -19,10 +19,9 @@ def uploadToFirestore(data):
     try:
         cred = credentials.Certificate('serviceAccountKey.json')
         firebase_admin.initialize_app(cred)
-        token = authenticate()
         client = firestore.client()
 
-        for index, row in data.iterrows():
+        for i, row in data.iterrows():
             client.collection('stock_picks').add({
                 'symbol': row['symbol'],
                 'name': row['name'],

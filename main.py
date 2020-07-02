@@ -89,9 +89,6 @@ def evaluatePickedStocks():
     picked_stocks = retrievePickedStocks(file_name)
     picked_df = pd.DataFrame(picked_stocks)
 
-    #TODO: set score based on Joel Greenblatt's book
-    #TODO: order picked_stocks by score
-
     # sort by roa to assign first ranking (according to page 56 of TLB that STILL beats the market)
     picked_df.sort_values(by=['roa'], ascending=False, inplace=True)
     picked_df['roa_ranking'] = [i + 1 for i in range(len(picked_stocks))]
