@@ -99,9 +99,24 @@ def evaluatePickedStocks():
     picked_df['overall_ranking'] = picked_df['pe_ranking'] + picked_df['roa_ranking']
     picked_df.sort_values(by=['overall_ranking'], ascending=True, inplace=True)
 
+    for i, stock in picked_df.iterrows():
+        picked_df.at[i, 'industry'] = getCompanyIndustry(stock)
+
     picked_df.to_excel('best_picks.xlsx')
 
     firestore.uploadToFirestore(picked_df)
+
+def getCompanyIndustry(stock):
+    params = {
+        'apikey': api_key
+    }
+
+    symbol = stock['symbol']
+    company_profile = http.get(f'https://financialmodelingprep.com/api/v3/profile/{symbol}', params)
+    company_profile = company_profile.json()
+    if len(company_profile) <= 0:
+        return ''
+    return company_profile[0]['industry']
 
 if __name__ == "__main__":
     # pickNewStocks()

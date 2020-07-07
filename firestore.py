@@ -30,6 +30,7 @@ def uploadToFirestore(data):
                 'roa_ranking': row['roa_ranking'],
                 'pe_ranking': row['pe_ranking'],
                 'overall_ranking': row['overall_ranking'],
+                'industry': row['industry'],
                 'created_at': time.time()
             })
     except Exception as ex:
